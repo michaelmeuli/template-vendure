@@ -145,6 +145,9 @@ export default {
       paymentMethod.value = method;
     };
 
+    const totalsref = computed(() => cartGetters.getTotals(cart.value));
+    const totals = totalsref.value
+
     const processOrder = async () => {
       const response = await set({
         method: paymentMethod?.value?.code,
@@ -153,7 +156,7 @@ export default {
         }
       });
 
-      const thankYouPath = { name: 'thank-you', query: { order: response?.code }};
+      const thankYouPath = { name: 'thank-you', query: { order: response?.code, payway: paymentMethod?.value?.code, total: totals.total }};
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
     };

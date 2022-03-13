@@ -16,6 +16,16 @@
         </div>
       </template>
     </SfCallToAction>
+
+    <div v-if="isSwissqrinvoice">
+      <pdf :src="url"></pdf>
+      <a :href="url" target="_blank">
+        <SfButton class="download_qr-bill-button button-size">
+          Download QR-Rechnung
+        </SfButton>
+      </a>
+    </div>
+
     <section class="section">
       <div class="order">
         <SfHeading
@@ -76,14 +86,59 @@
 
 <script>
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
+import { PDF, BlobStream } from 'swissqrbill';
+import { useUserBilling, userBillingGetters } from '@vue-storefront/vendure';
+import { onSSR } from '@vue-storefront/core';
+import { ref, reactive, onMounted, computed } from '@vue/composition-api';
+import pdf from 'vue-pdf'
+
 export default {
   components: {
     SfHeading,
     SfButton,
-    SfCallToAction
+    SfCallToAction,
+    pdf
   },
   name: 'ThankYou',
   setup(props, context) {
+
+    const { billing: userBilling, load: loadUserBilling } = useUserBilling();
+    const url = ref('');
+
+    onSSR(async () => {
+      await loadUserBilling();
+    });
+    const defaultAddress = userBillingGetters.getDefault(userBilling.value, 'billing');
+
+    const data = {
+      currency: 'CHF',
+      amount: parseFloat(context.root.$route.query.total),
+      additionalInformation: context.root.$route.query.order,
+      creditor: {
+        name: 'Jessica Meuli',
+        address: 'Sonnenhaldenstrasse 5',
+        zip: 8360,
+        city: 'Wallenwil',
+        account: 'CH14 0078 1612 4519 5200 2',
+        country: 'CH',
+      },
+      debtor: {
+        name: userBillingGetters.getFirstName(defaultAddress) + ' ' + userBillingGetters.getLastName(defaultAddress) || 'Muster Hans',
+        address: userBillingGetters.getStreetName(defaultAddress) + ' ' + userBillingGetters.getStreetNumber(defaultAddress) || 'Musterstrasse 7',
+        zip: userBillingGetters.getPostCode(defaultAddress) || 1000,
+        city: userBillingGetters.getCity(defaultAddress) || 'Musterstadt',
+        country: 'CH',
+      },
+    }
+
+    const stream = new BlobStream();
+    const pdf = new PDF(data, stream);
+    pdf.on('finish', () => {
+      url.value = stream.toBlobURL('application/pdf');
+    });
+
+    const isSwissqrinvoice = context.root.$route.query.payway === 'swissqrinvoice';
+
     return {
       address: {
         name: 'Company Headquarter',
@@ -93,7 +148,10 @@ export default {
       },
       order: {
         number: `#${context.root.$route.query.order}`
-      }
+      },
+      isSwissqrinvoice,
+      data,
+      url
     };
   }
 };
@@ -258,5 +316,8 @@ export default {
   @include for-desktop {
     --button-width: 25rem;
   }
+}
+.download_qr-bill-button {
+  margin: 2rem auto 3.75rem;
 }
 </style>
