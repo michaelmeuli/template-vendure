@@ -16,6 +16,10 @@ export default {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
+      },
+      {
+        'http-equiv': 'Content-Security-Policy',
+        content: 'upgrade-insecure-requests'
       }
     ],
     link: [
