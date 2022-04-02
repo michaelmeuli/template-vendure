@@ -83,13 +83,13 @@ export default {
       { code: 'en', label: 'English', file: 'en.js', iso: 'en' },
       { code: 'de', label: 'German', file: 'de.js', iso: 'de' }
     ],
-    defaultLocale: 'en',
+    defaultLocale: 'de',
     lazy: true,
     seo: true,
     langDir: 'lang/',
     strategy: 'no_prefix',
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: 'de',
       numberFormats: {
         en: {
           currency: {
@@ -101,8 +101,8 @@ export default {
         de: {
           currency: {
             style: 'currency',
-            currency: 'EUR',
-            currencyDisplay: 'symbol'
+            currency: 'CHF',
+            currencyDisplay: 'code'
           }
         }
       }
