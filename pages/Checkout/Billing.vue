@@ -69,7 +69,7 @@
         </ValidationProvider>
         <ValidationProvider
           name="apartment"
-          rules="required|min:2"
+          rules="required"
           v-slot="{ errors }"
           slim
         >
@@ -253,6 +253,7 @@ export default {
           await loadShipping();
         }
         oldBilling = {...billingDetails.value};
+        console.log('shippingDetails.value: ', shippingDetails.value);
         billingDetails.value = {...mapOrderAddressToAddressForm(shippingDetails.value)};
         return;
       }

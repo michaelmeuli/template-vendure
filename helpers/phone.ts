@@ -4,7 +4,7 @@ import PhoneNumber from 'awesome-phonenumber';
 extend('phone', {
   message: 'This is not a valid phone number',
   validate (value) {
-    const phone = new PhoneNumber(value);
+    const phone = new PhoneNumber(value, 'CH');
     return phone.isValid();
   }
 });
