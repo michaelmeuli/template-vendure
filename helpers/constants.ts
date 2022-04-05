@@ -1,5 +1,5 @@
 export const COUNTRIES = [
-  { key: 'CH', label: 'Schweiz' }
+  { key: 'CH', label: 'Switzerland' }
 ];
 
 export const EMAIL_ADDRESS_CONFLICT_ERROR = 'EMAIL_ADDRESS_CONFLICT_ERROR';
