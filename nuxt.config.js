@@ -8,7 +8,7 @@ export default {
     host: 'localhost'
   },
   head: {
-    title: 'Vue Storefront',
+    title: 'Yoga Lichtquelle Shop',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
