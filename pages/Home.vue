@@ -147,15 +147,12 @@ export default {
       banners: [
         {
           slot: 'banner-A',
-          subtitle: 'Dresses',
-          title: 'Cocktail & Party',
+          subtitle: 'Ätherische Öle',
+          title: 'Öl Singles',
           description:
             'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
           buttonText: 'Shop now',
-          image: {
-            mobile: this.$config.theme.home.bannerA.image.mobile,
-            desktop: this.$config.theme.home.bannerA.image.desktop
-          },
+          image: this.$config.theme.home.bannerA.image,
           class: 'sf-banner--slim desktop-only',
           link: this.$config.theme.home.bannerA.link
         },
