@@ -2,7 +2,7 @@
 const defaultConfig = {
   home: {
     bannerA: {
-      link: '/',
+      link: '/c/atherische-ole',
       image: '/homepage/bannerA.jpg'
     },
     bannerB: {
