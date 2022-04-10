@@ -1,8 +1,7 @@
 <template>
   <div id="home">
     <LazyHydrate when-visible>
-      <SfCard v-for="card in cards"
-        :key="card.slot"
+      <SfCard
         :title="card.title"
         :titleLevel="card.titleLevel"
         :image="card.image"
@@ -66,18 +65,16 @@ export default {
           link: this.$config.theme.home.bannerA.link
         }
       ],
-      cards: [
-        {
-          title: 'Öl Singles',
-          titleLevel: 3,
-          image: '/homepage/card1.jpg',
-          imageWidth: 340,
-          imageHeight: 300,
-          description: 'Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.',
-          link: '/c/atherische-ole',
-          buttonText: 'Öl Singles'
-        }
-      ]
+      card: {
+        title: 'Öl Singles',
+        titleLevel: 3,
+        image: '/homepage/card1.jpg',
+        imageWidth: 340,
+        imageHeight: 300,
+        description: 'Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.',
+        link: '/c/atherische-ole',
+        buttonText: 'Öl Singles'
+      }
     };
   },
   methods: {
