@@ -1,17 +1,36 @@
 <template>
   <div id="home">
-    <LazyHydrate when-visible>
-      <SfCard
-        :title="card.title"
-        :titleLevel="card.titleLevel"
-        :image="card.image"
-        :imageWidth="card.imageWidth"
-        :imageHeight="card.imageHeight"
-        :description="card.description"
-        :link="card.link"
-        :buttonText="card.buttonText"
-      />
-    </LazyHydrate>
+    <div class="cards">
+      <div class="card">
+        <LazyHydrate when-visible>
+          <SfCard
+            :title="card.title"
+            :titleLevel="card.titleLevel"
+            :image="card.image"
+            :imageWidth="card.imageWidth"
+            :imageHeight="card.imageHeight"
+            :description="card.description"
+            :link="card.link"
+            :buttonText="card.buttonText"
+          />
+        </LazyHydrate>
+      </div>
+
+      <div class="card">
+        <LazyHydrate when-visible>
+          <SfCard
+            :title="card.title"
+            :titleLevel="card.titleLevel"
+            :image="card.image"
+            :imageWidth="card.imageWidth"
+            :imageHeight="card.imageHeight"
+            :description="card.description"
+            :link="card.link"
+            :buttonText="card.buttonText"
+          />
+        </LazyHydrate>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -27,13 +46,13 @@ import {
   SfHeading,
   SfArrow,
   SfButton,
-  SfCard
-} from '@storefront-ui/vue';
-import InstagramFeed from '~/components/InstagramFeed.vue';
-import LazyHydrate from 'vue-lazy-hydration';
+  SfCard,
+} from "@storefront-ui/vue";
+import InstagramFeed from "~/components/InstagramFeed.vue";
+import LazyHydrate from "vue-lazy-hydration";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     InstagramFeed,
     SfHero,
@@ -48,40 +67,41 @@ export default {
     SfArrow,
     SfButton,
     LazyHydrate,
-    SfCard
+    SfCard,
   },
   data() {
     return {
       banners: [
         {
-          slot: 'banner-A',
-          subtitle: 'Ätherische Öle',
-          title: 'Öl Singles',
+          slot: "banner-A",
+          subtitle: "Ätherische Öle",
+          title: "Öl Singles",
           description:
-            'Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.',
-          buttonText: 'Shop now',
+            "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
+          buttonText: "Shop now",
           image: this.$config.theme.home.bannerA.image,
-          class: 'sf-banner--slim banner-central desktop-only',
-          link: this.$config.theme.home.bannerA.link
-        }
+          class: "sf-banner--slim banner-central desktop-only",
+          link: this.$config.theme.home.bannerA.link,
+        },
       ],
       card: {
-        title: 'Öl Singles',
+        title: "Öl Singles",
         titleLevel: 3,
-        image: '/homepage/card1.jpg',
+        image: "/homepage/card1.jpg",
         imageWidth: 340,
         imageHeight: 300,
-        description: 'Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.',
-        link: '/c/atherische-ole',
-        buttonText: 'Öl Singles'
-      }
+        description:
+          "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
+        link: "/c/atherische-ole",
+        buttonText: "Öl Singles",
+      },
     };
   },
   methods: {
     toggleWishlist(index) {
       this.products[index].isInWishlist = !this.products[index].isInWishlist;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -117,7 +137,8 @@ export default {
     }
   }
   ::v-deep .sf-hero__control {
-    &--right, &--left {
+    &--right,
+    &--left {
       display: none;
     }
   }
@@ -172,7 +193,7 @@ export default {
 }
 
 .carousel {
-    margin: 0 calc(-1 * var(--spacer-sm)) 0 0;
+  margin: 0 calc(-1 * var(--spacer-sm)) 0 0;
   @include for-desktop {
     margin: 0;
   }
@@ -187,9 +208,20 @@ export default {
   }
   ::v-deep .sf-arrow--long .sf-arrow--right {
     --arrow-icon-transform: rotate(180deg);
-     -webkit-transform-origin: center;
-     transform-origin: center;
+    -webkit-transform-origin: center;
+    transform-origin: center;
   }
+}
+
+.cards {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin: 60px;
 }
 
 </style>
