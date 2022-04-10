@@ -1,20 +1,17 @@
 <template>
   <div id="home">
     <LazyHydrate when-visible>
-      <SfBannerGrid :banner-grid="1" class="banner-grid">
-        <template v-for="item in banners" v-slot:[item.slot]>
-          <SfBanner
-            :key="item.slot"
-            :title="item.title"
-            :subtitle="item.subtitle"
-            :description="item.description"
-            :button-text="item.buttonText"
-            :link="localePath(item.link)"
-            :image="item.image"
-            :class="item.class"
-          />
-        </template>
-      </SfBannerGrid>
+      <SfCard v-for="card in cards"
+        :key="card.slot"
+        :title="card.title"
+        :titleLevel="card.titleLevel"
+        :image="card.image"
+        :imageWidth="card.imageWidth"
+        :imageHeight="card.imageHeight"
+        :description="card.description"
+        :link="card.link"
+        :buttonText="card.buttonText"
+      />
     </LazyHydrate>
   </div>
 </template>
@@ -30,7 +27,8 @@ import {
   SfBannerGrid,
   SfHeading,
   SfArrow,
-  SfButton
+  SfButton,
+  SfCard
 } from '@storefront-ui/vue';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -50,7 +48,8 @@ export default {
     SfHeading,
     SfArrow,
     SfButton,
-    LazyHydrate
+    LazyHydrate,
+    SfCard
   },
   data() {
     return {
@@ -65,6 +64,18 @@ export default {
           image: this.$config.theme.home.bannerA.image,
           class: 'sf-banner--slim banner-central desktop-only',
           link: this.$config.theme.home.bannerA.link
+        }
+      ],
+      cards: [
+        {
+          title: 'Öl Singles',
+          titleLevel: 3,
+          image: '/homepage/card1.jpg',
+          imageWidth: 340,
+          imageHeight: 300,
+          description: 'Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.',
+          link: '/c/atherische-ole',
+          buttonText: 'Öl Singles'
         }
       ]
     };
