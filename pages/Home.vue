@@ -4,14 +4,14 @@
       <div class="card">
         <LazyHydrate when-visible>
           <SfCard
-            :title="card.title"
-            :titleLevel="card.titleLevel"
-            :image="card.image"
-            :imageWidth="card.imageWidth"
-            :imageHeight="card.imageHeight"
-            :description="card.description"
-            :link="card.link"
-            :buttonText="card.buttonText"
+            :title="card1.title"
+            :titleLevel="card1.titleLevel"
+            :image="card1.image"
+            :imageWidth="card1.imageWidth"
+            :imageHeight="card1.imageHeight"
+            :description="card1.description"
+            :link="card1.link"
+            :buttonText="card1.buttonText"
           />
         </LazyHydrate>
       </div>
@@ -19,14 +19,14 @@
       <div class="card">
         <LazyHydrate when-visible>
           <SfCard
-            :title="card.title"
-            :titleLevel="card.titleLevel"
-            :image="card.image"
-            :imageWidth="card.imageWidth"
-            :imageHeight="card.imageHeight"
-            :description="card.description"
-            :link="card.link"
-            :buttonText="card.buttonText"
+            :title="card2.title"
+            :titleLevel="card2.titleLevel"
+            :image="card2.image"
+            :imageWidth="card2.imageWidth"
+            :imageHeight="card2.imageHeight"
+            :description="card2.description"
+            :link="card2.link"
+            :buttonText="card2.buttonText"
           />
         </LazyHydrate>
       </div>
@@ -71,21 +71,19 @@ export default {
   },
   data() {
     return {
-      banners: [
-        {
-          slot: "banner-A",
-          subtitle: "Ätherische Öle",
-          title: "Öl Singles",
-          description:
-            "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
-          buttonText: "Shop now",
-          image: this.$config.theme.home.bannerA.image,
-          class: "sf-banner--slim banner-central desktop-only",
-          link: this.$config.theme.home.bannerA.link,
-        },
-      ],
-      card: {
+      card1: {
         title: "Öl Singles",
+        titleLevel: 3,
+        image: "/homepage/card1.jpg",
+        imageWidth: 340,
+        imageHeight: 300,
+        description:
+          "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
+        link: "/c/atherische-ole",
+        buttonText: "Öl Singles",
+      },
+      card2: {
+        title: "Gemischte öle",
         titleLevel: 3,
         image: "/homepage/card1.jpg",
         imageWidth: 340,
