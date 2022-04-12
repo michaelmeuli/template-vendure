@@ -88,6 +88,7 @@
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
 import { PDF, BlobStream } from 'swissqrbill';
 import { useUserBilling, userBillingGetters } from '@vue-storefront/vendure';
+import { useUserShipping, userShippingGetters } from '@vue-storefront/vendure';
 import { onSSR } from '@vue-storefront/core';
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import pdf from 'vue-pdf'
@@ -102,13 +103,13 @@ export default {
   name: 'ThankYou',
   setup(props, context) {
 
-    const { billing: userBilling, load: loadUserBilling } = useUserBilling();
+    const { shipping: userBilling, load: loadUserBilling } = useUserShipping();
     const url = ref('');
 
     onSSR(async () => {
       await loadUserBilling();
     });
-    const defaultAddress = userBillingGetters.getDefault(userBilling.value, 'billing');
+    const defaultAddress = userShippingGetters.getDefault(userBilling.value, 'billing');
 
     const data = {
       currency: 'CHF',
@@ -123,10 +124,10 @@ export default {
         country: 'CH',
       },
       debtor: {
-        name: userBillingGetters.getFirstName(defaultAddress) + ' ' + userBillingGetters.getLastName(defaultAddress) || 'Muster Hans',
-        address: userBillingGetters.getStreetName(defaultAddress) + ' ' + userBillingGetters.getStreetNumber(defaultAddress) || 'Musterstrasse 7',
-        zip: userBillingGetters.getPostCode(defaultAddress) || 1000,
-        city: userBillingGetters.getCity(defaultAddress) || 'Musterstadt',
+        name: userShippingGetters.getFirstName(defaultAddress) + ' ' + userShippingGetters.getLastName(defaultAddress) || 'Muster Hans',
+        address: userShippingGetters.getStreetName(defaultAddress) + ' ' + userShippingGetters.getStreetNumber(defaultAddress) || 'Musterstrasse 7',
+        zip: userShippingGetters.getPostCode(defaultAddress) || 1000,
+        city: userShippingGetters.getCity(defaultAddress) || 'Musterstadt',
         country: 'CH',
       },
     }
