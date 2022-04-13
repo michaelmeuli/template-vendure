@@ -11,7 +11,7 @@
             </router-link>
           </SfListItem>
           <SfListItem>
-            <router-link to="/page/datenschutzerklärung" exact>
+            <router-link to="/privacypolicy" exact>
               <SfMenuItem
                 class="sf-footer__menu-item"
                 :label="'Datenschutzerklärung'"

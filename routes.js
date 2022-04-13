@@ -7,6 +7,11 @@ export function getRoutes(themeDir = __dirname) {
     component: path.resolve(themeDir, 'pages/Home.vue')
   },
   {
+    name: 'privacypolicy',
+    path: '/privacypolicy',
+    component: path.resolve(themeDir, 'pages/PrivacyPolicy.vue')
+  },
+  {
     name: 'product',
     path: '/p/:id/:slug/',
     component: path.resolve(themeDir, 'pages/Product.vue')
