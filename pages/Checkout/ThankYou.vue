@@ -5,8 +5,8 @@
       class="banner"
       :title="$t('Thank you for your order!')"
       :image="{
-        mobile: '/thankyou/bannerM.png',
-        desktop: '/thankyou/bannerD.png',
+        mobile: '/thankyou/bannerMyl.png',
+        desktop: '/thankyou/bannerDyl.png',
       }"
     >
       <template #description>
