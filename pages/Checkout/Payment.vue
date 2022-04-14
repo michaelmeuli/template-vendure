@@ -65,14 +65,6 @@
 
         <VsfPaymentProvider @paymentMethodSelected="updatePaymentMethod"/>
 
-        <SfCheckbox v-e2e="'terms'" v-model="terms" name="terms" class="summary__terms">
-          <template #label>
-            <div class="sf-checkbox__label">
-              {{ $t('I agree to') }} <SfLink href="#"> {{ $t('Terms and conditions') }}</SfLink>
-            </div>
-          </template>
-        </SfCheckbox>
-
         <div class="summary__action">
           <SfButton
             type="button"
@@ -134,7 +126,7 @@ export default {
     const { set } = usePayment();
     const { loading } = useMakeOrder();
 
-    const terms = ref(false);
+    const terms = ref(true);
     const paymentMethod = ref(null);
 
     onSSR(async () => {
