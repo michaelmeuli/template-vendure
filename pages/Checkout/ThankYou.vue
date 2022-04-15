@@ -87,11 +87,10 @@
 <script>
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
 import { PDF, BlobStream } from 'swissqrbill';
-import { useUserBilling, userBillingGetters } from '@vue-storefront/vendure';
-import { useUserShipping, userShippingGetters } from '@vue-storefront/vendure';
-import { onSSR } from '@vue-storefront/core';
+import { useShipping, userShippingGetters } from '@vue-storefront/vendure';
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
-import pdf from 'vue-pdf'
+import pdf from 'vue-pdf';
+import { getDefaultAddress } from '~/helpers';
 
 export default {
   components: {
@@ -102,14 +101,16 @@ export default {
   },
   name: 'ThankYou',
   setup(props, context) {
-
-    const { shipping: userBilling, load: loadUserBilling } = useUserShipping();
+    const { shipping: shippingDetails, load: loadShipping } = useShipping();
     const url = ref('');
 
-    onSSR(async () => {
-      await loadUserBilling();
-    });
-    const defaultAddress = userShippingGetters.getDefault(userBilling.value, 'billing');
+    const getShippingDetails = async () => {
+      if (!shippingDetails.value) {
+        await loadShipping();
+      }
+    };
+    getShippingDetails();
+    console.log(shippingDetails.value);
 
     const data = {
       currency: 'CHF',
@@ -124,10 +125,10 @@ export default {
         country: 'CH',
       },
       debtor: {
-        name: userShippingGetters.getFirstName(defaultAddress) + ' ' + userShippingGetters.getLastName(defaultAddress) || 'Muster Hans',
-        address: userShippingGetters.getStreetName(defaultAddress) + ' ' + userShippingGetters.getStreetNumber(defaultAddress) || 'Musterstrasse 7',
-        zip: userShippingGetters.getPostCode(defaultAddress) || 1000,
-        city: userShippingGetters.getCity(defaultAddress) || 'Musterstadt',
+        name: shippingDetails.value.fullName || '',
+        address: shippingDetails.value.streetLine1 || '',
+        zip: shippingDetails.value.postalCode || '',
+        city: shippingDetails.value.city || '',
         country: 'CH',
       },
     }
