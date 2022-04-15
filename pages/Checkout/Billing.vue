@@ -281,6 +281,8 @@ export default {
       // sameAsShipping.value = false;
     };
 
+    handleFormSubmit();
+
     onSSR(async () => {
       await load();
     });

@@ -192,7 +192,7 @@
           @click="$router.push(localePath({ name: 'billing' }))"
           :disabled="!shouldDisplayButton || loadingShippingProvider"
         >
-          {{ $t('Continue to billing') }}
+          {{ $t('Continue to payment') }}
         </SfButton>
         </div>
     </form>
