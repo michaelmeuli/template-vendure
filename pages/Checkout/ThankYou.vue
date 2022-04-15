@@ -90,7 +90,6 @@ import { PDF, BlobStream } from 'swissqrbill';
 import { useShipping, userShippingGetters } from '@vue-storefront/vendure';
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import pdf from 'vue-pdf';
-import { getDefaultAddress } from '~/helpers';
 
 export default {
   components: {
