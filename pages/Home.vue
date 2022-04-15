@@ -85,7 +85,7 @@ export default {
       card2: {
         title: "Gemischte öle",
         titleLevel: 3,
-        image: "/homepage/card1.jpg",
+        image: "/homepage/card2.jpg",
         imageWidth: 340,
         imageHeight: 300,
         description:
