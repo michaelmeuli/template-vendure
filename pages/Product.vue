@@ -27,18 +27,6 @@
           <SfPrice
             :regular="$n(productGetters.getPrice(product).regular, 'currency')"
           />
-          <div>
-            <div class="product__rating">
-              <SfRating
-                :score="averageRating"
-                :max="5"
-              />
-              <a v-if="!!totalReviews" href="#" class="product__count">
-                ({{ totalReviews }})
-              </a>
-            </div>
-            <SfButton class="sf-button--text">{{ $t('Read all reviews') }}</SfButton>
-          </div>
         </div>
         <div>
           <div class="product__description desktop-only" v-html="productGetters.getDescription(product)">
