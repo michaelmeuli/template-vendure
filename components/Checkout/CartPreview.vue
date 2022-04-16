@@ -80,7 +80,7 @@ export default {
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const discounts = computed(() => cartGetters.getDiscounts(cart.value));
-    const shippingCost = computed(() => getCalculatedPrice(cart?.value?.shipping));
+    const shippingCost = computed(() => getCalculatedPrice(cart?.value?.shippingWithTax));
 
     return {
       discounts,

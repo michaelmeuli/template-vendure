@@ -31,7 +31,6 @@
               <div class="sf-radio__label shipping__label">
                 <div>{{ label }}</div>
                 <div v-if="method && method.priceWithTax">{{ $n(getCalculatedPrice(method.priceWithTax), 'currency') }}</div>
-                <div v-else>{{ $n(0, 'currency') }}</div>
               </div>
             </template>
             <template #description="{ localizedDescription }">
