@@ -18,6 +18,14 @@
               />
             </router-link>
           </SfListItem>
+          <SfListItem>
+            <router-link to="/tech" exact>
+              <SfMenuItem
+                class="sf-footer__menu-item"
+                :label="'Source code'"
+              />
+            </router-link>
+          </SfListItem>
       </SfList>
     </SfFooterColumn>
   </SfFooter>
