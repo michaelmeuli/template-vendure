@@ -91,7 +91,7 @@ export default {
         description:
           "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
         link: "/c/atherische-ole/olmischungen",
-        buttonText: "Öl Singles",
+        buttonText: "Gemischte Öle",
       },
     };
   },
