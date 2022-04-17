@@ -57,31 +57,6 @@
           <span class="navbar__label smartphone-only">{{ pagination.totalItems }} {{ $t('Items') }}</span>
         </div>
 
-        <div class="navbar__view">
-          <span class="navbar__view-label desktop-only">{{ $t('View') }}</span>
-          <SfIcon
-            v-e2e="'tiles-icon'"
-            class="navbar__view-icon"
-            :color="isCategoryGridView ? 'black' : 'dark-secondary'"
-            icon="tiles"
-            size="12px"
-            role="button"
-            :aria-label="$t('Change to grid view')"
-            :aria-pressed="isCategoryGridView"
-            @click="changeToCategoryGridView"
-          />
-          <SfIcon
-            v-e2e="'list-icon'"
-            class="navbar__view-icon"
-            :color="!isCategoryGridView ? 'black' : 'dark-secondary'"
-            icon="list"
-            size="12px"
-            role="button"
-            :aria-label="$t('Change to list view')"
-            :aria-pressed="!isCategoryGridView"
-            @click="changeToCategoryListView"
-          />
-        </div>
       </div>
     </div>
 
