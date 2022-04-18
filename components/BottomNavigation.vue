@@ -4,7 +4,7 @@
     <nuxt-link to="/">
       <SfBottomNavigationItem :class="$route.path == '/' ? 'sf-bottom-navigation__item--active' : ''" icon="home" size="20px" label="Home"/>
     </nuxt-link>
-    <SfBottomNavigationItem icon="menu" size="20px" label="Menu"/>
+    <SfBottomNavigationItem icon="menu" size="20px" label="Menu" @click="handleMenuClick"/>
     <SfBottomNavigationItem icon="profile" size="20px" label="Account" @click="handleAccountClick"/>
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
@@ -48,10 +48,15 @@ export default {
       toggleLoginModal();
     };
 
+    const handleMenuClick = async () => {
+      root.$router.push('/c/atherische-ole');
+    };
+
     return {
       toggleWishlistSidebar,
       toggleCartSidebar,
-      handleAccountClick
+      handleAccountClick,
+      handleMenuClick
     };
   }
 };
