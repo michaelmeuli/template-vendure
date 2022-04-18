@@ -29,7 +29,7 @@
           />
         </div>
         <div>
-          <div class="product__description desktop-only" v-html="productGetters.getDescription(product)">
+          <div class="product__description" v-html="productGetters.getDescription(product)">
           </div>
           <div v-if="options && options.length">
             <SfSelect
