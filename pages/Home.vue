@@ -79,7 +79,7 @@ export default {
         imageHeight: 300,
         description:
           "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
-        link: "/c/atherische-ole/einzelole",
+        link: "/c/atherische-ole/einzelole?sort=NAME_ASC",
         buttonText: "Öl Singles",
       },
       card2: {
@@ -90,7 +90,7 @@ export default {
         imageHeight: 300,
         description:
           "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
-        link: "/c/atherische-ole/olmischungen",
+        link: "/c/atherische-ole/olmischungen?sort=NAME_ASC",
         buttonText: "Gemischte Öle",
       },
     };
