@@ -12,7 +12,7 @@
           key="results"
         >
          <SfMegaMenuColumn
-            title="Categories"
+            title="Kategorien"
             class="sf-mega-menu-column--pined-content-on-mobile search__categories"
           >
            <template #title="{title}">
@@ -36,7 +36,7 @@
            </SfList>
          </SfMegaMenuColumn>
          <SfMegaMenuColumn
-            title="Product suggestions"
+            title="Produktvorschläge"
             class="sf-mega-menu-column--pined-content-on-mobile search__results"
           >
            <template #title="{title}">
