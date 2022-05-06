@@ -8,18 +8,23 @@ export default {
     host: 'localhost'
   },
   head: {
-    title: 'Yoga Lichtquelle Shop',
+    title: 'Ätherische Öle von doTERRA',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: 'Online Shop für ätherische Öle von doTERRA (Schweiz) in garantiert reiner therapeutischer Qualität.'
       },
       {
         'http-equiv': 'Content-Security-Policy',
         content: 'upgrade-insecure-requests'
+      },
+      { 
+        hid: 'keywords', 
+        name: 'keywords', 
+        content: 'doterra, ätherische öle, aetherische oele, therapeutisch, wellness, spa, massagen, diffuser, Aromatherapie, Atemwege, zur Beruhigung, zur Hautpflege' 
       }
     ],
     link: [
