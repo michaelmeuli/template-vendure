@@ -46,10 +46,14 @@ import {
   SfHeading,
   SfArrow,
   SfButton,
-  SfCard,
-} from "@storefront-ui/vue";
-import InstagramFeed from "~/components/InstagramFeed.vue";
-import LazyHydrate from "vue-lazy-hydration";
+  SfCard
+} from '@storefront-ui/vue';
+import InstagramFeed from '~/components/InstagramFeed.vue';
+import LazyHydrate from 'vue-lazy-hydration';
+import { useContext, computed } from '@nuxtjs/composition-api';
+import { useFacet } from '@vue-storefront/vendure';
+import { onSSR } from '@vue-storefront/core';
+import { getCalculatedPrice } from '~/helpers';
 
 export default {
   name: "Home",
@@ -69,37 +73,47 @@ export default {
     LazyHydrate,
     SfCard,
   },
-  data() {
+  setup() {
+
+    const { $config } = useContext();
+    const card1 = {
+      title: "Öl Singles",
+      titleLevel: 3,
+      image: "/homepage/card1.jpg",
+      imageWidth: 340,
+      imageHeight: 300,
+      description:
+        "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
+      link: "/c/atherische-ole/einzelole?sort=NAME_ASC",
+      buttonText: "Öl Singles",
+    }
+    const card2 = {
+      title: "Gemischte Öle",
+      titleLevel: 3,
+      image: "/homepage/card2.jpg",
+      imageWidth: 340,
+      imageHeight: 300,
+      description:
+        "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
+      link: "/c/atherische-ole/olmischungen?sort=NAME_ASC",
+      buttonText: "Gemischte Öle",
+    }
+    const { search, result } = useFacet();
+
+    onSSR(async () => {
+      await search({ sort: { name: 'DESC' }, take: 8});
+    });
+
+    const products = computed(() => result.value.data.items);
+
     return {
-      card1: {
-        title: "Öl Singles",
-        titleLevel: 3,
-        image: "/homepage/card1.jpg",
-        imageWidth: 340,
-        imageHeight: 300,
-        description:
-          "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
-        link: "/c/atherische-ole/einzelole?sort=NAME_ASC",
-        buttonText: "Öl Singles",
-      },
-      card2: {
-        title: "Gemischte Öle",
-        titleLevel: 3,
-        image: "/homepage/card2.jpg",
-        imageWidth: 340,
-        imageHeight: 300,
-        description:
-          "Extrakte aus Pflanzen mit erstaunlichen Vorteilen. Natürlich und einfach in der Anwendung.",
-        link: "/c/atherische-ole/olmischungen?sort=NAME_ASC",
-        buttonText: "Gemischte Öle",
-      },
+      card1,
+      card2,
+      products,
+      getCalculatedPrice
     };
-  },
-  methods: {
-    toggleWishlist(index) {
-      this.products[index].isInWishlist = !this.products[index].isInWishlist;
-    },
-  },
+
+  }
 };
 </script>
 
@@ -181,6 +195,15 @@ export default {
     padding-bottom: 0;
   }
 }
+ ::v-deep .sf-product-card__image .sf-image {
+    --image-height: 14.375rem;
+    --image-width: 9.375rem;
+    object-fit: cover;
+    @include for-desktop {
+      --image-width: 13.125rem;
+      --image-height: 18.75rem;
+    }
+  }
 
 .call-to-action {
   background-position: right;
