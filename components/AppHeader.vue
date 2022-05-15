@@ -11,7 +11,7 @@
         </nuxt-link>
       </template>
       <template #navigation>
-        <div class="sf-header__navigation desktop" v-if="!isMobile">
+        <div class="sf-header__navigation desktop">
           <SfHeaderNavigationItem
             v-for="category in headerNavigation"
             :key="category.name"
@@ -21,23 +21,6 @@
             :link="localePath(`/c/${category.link}`)"
           />
         </div>
-        <SfModal v-else :visible="isMobileMenuOpen" :title="$t('Menu')" @close="toggleMobileMenu">
-          <SfList>
-            <SfListItem
-              v-for="category in headerNavigation"
-              :key="category.name"
-              class="nav-item sf-header-navigation-item"
-              v-e2e="`app-header-url_${category.link}`"
-            >
-              <SfMenuItem
-                :label="category.name"
-                class="sf-header-navigation-item__menu-item"
-                :link="localePath(`/c/${category.link}`)"
-                @click.native="toggleMobileMenu"
-              />
-            </SfListItem>
-          </SfList>
-        </SfModal>
       </template>
       <template #header-icons>
         <div class="sf-header__icons">
