@@ -9,6 +9,8 @@
         label="Home"
       />
     </nuxt-link>
+    <SfBottomNavigationItem icon="menu" size="20px" label="Menu" @click="handleMenuClick"/>
+    <SfBottomNavigationItem icon="profile" size="20px" label="Account" @click="handleAccountClick"/>
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
       :label="$t('Basket')"
@@ -52,13 +54,17 @@ export default {
       isMobileMenuOpen.value ? toggleMobileMenu() : false;
       root.$router.push('/');
     };
+    const handleMenuClick = async () => {
+      root.$router.push('/c/atherische-ole');
+    };
     return {
       isMobileMenuOpen,
       toggleWishlistSidebar,
       toggleCartSidebar,
       toggleMobileMenu,
       handleAccountClick,
-      handleHomeClick
+      handleHomeClick,
+      handleMenuClick
     };
   }
 };
