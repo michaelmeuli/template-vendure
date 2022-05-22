@@ -105,6 +105,8 @@ import { onSSR } from '@vue-storefront/core';
 import { ref, computed } from '@vue/composition-api';
 import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
 
+import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from './graphql';
+
 export default {
   name: 'ReviewOrder',
   components: {
@@ -128,6 +130,7 @@ export default {
 
     const terms = ref(true);
     const paymentMethod = ref(null);
+    const stripePaymentIntentId = ref(null);
 
     onSSR(async () => {
       await load();
@@ -141,10 +144,18 @@ export default {
     const totals = totalsref.value
 
     const processOrder = async () => {
+
+      if (paymentMethod?.value?.code === stripe) {
+          stripePaymentIntentId.value = this.$apollo.mutate({
+            mutation: CREATE_LINK_MUTATION
+          })
+          console.log('stripePaymentIntentId: ', stripePaymentIntentId.value);
+      }
+
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          paymentIntentId: 'xyz'
+          paymentIntentId: stripePaymentIntentId.value
         }
       });
 
