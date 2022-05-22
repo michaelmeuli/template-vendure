@@ -144,7 +144,7 @@ export default {
     const totals = totalsref.value
 
     const processOrder = async () => {
-
+      console.log('paymentMethod-code: ', paymentMethod?.value?.code);
       if (paymentMethod?.value?.code === stripe) {
           stripePaymentIntentId.value = this.$apollo.mutate({
             mutation: CREATE_LINK_MUTATION
