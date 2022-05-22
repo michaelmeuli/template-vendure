@@ -144,7 +144,7 @@ export default {
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          // Here you would pass data from an external Payment Provided after successful payment process like payment id.
+          paymentIntentId: 'xyz'
         }
       });
 
