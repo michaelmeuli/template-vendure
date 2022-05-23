@@ -155,7 +155,7 @@ export default {
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          paymentIntentId: stripePaymentIntentId.value
+          // paymentIntentId: stripePaymentIntentId.value
         }
       });
 
