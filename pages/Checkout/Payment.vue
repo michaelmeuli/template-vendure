@@ -145,9 +145,9 @@ export default {
 
     const processOrder = async () => {
       console.log('paymentMethod-code: ', paymentMethod?.value?.code);
-      if (paymentMethod?.value?.code === stripe) {
+      if (paymentMethod?.value?.code === 'stripe') {
           stripePaymentIntentId.value = this.$apollo.mutate({
-            mutation: CREATE_LINK_MUTATION
+            mutation: CREATE_STRIPE_PAYMENT_INTENT_MUTATION
           })
           console.log('stripePaymentIntentId: ', stripePaymentIntentId.value);
       }
@@ -155,7 +155,7 @@ export default {
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          // paymentIntentId: stripePaymentIntentId.value
+          paymentIntentId: stripePaymentIntentId.value
         }
       });
 
