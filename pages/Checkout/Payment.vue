@@ -123,6 +123,20 @@ export default {
     SfLink,
     VsfPaymentProvider: () => import('~/components/Checkout/VsfPaymentProvider')
   },
+
+  methods: {
+    async getStripePaymentIntent() {
+      const result = await this.$apollo.mutate({
+        mutation: gql`mutation CreateStripePaymentIntentMutation {
+          createStripePaymentIntent {
+            createStripePaymentIntent
+            }
+          }
+        `,
+      })
+    }
+  },
+
   setup(props, context) {
     const { cart, load, setCart } = useCart();
     const { set } = usePayment();
@@ -130,7 +144,6 @@ export default {
 
     const terms = ref(true);
     const paymentMethod = ref(null);
-    const stripePaymentIntentId = ref(null);
 
     onSSR(async () => {
       await load();
@@ -143,19 +156,13 @@ export default {
     const totalsref = computed(() => cartGetters.getTotals(cart.value));
     const totals = totalsref.value
 
+    this.getStripePaymentIntent();
     const processOrder = async () => {
-      console.log('paymentMethod-code: ', paymentMethod?.value?.code);
-      if (paymentMethod?.value?.code === 'stripe') {
-          stripePaymentIntentId.value = this.$apollo.mutate({
-            mutation: CREATE_STRIPE_PAYMENT_INTENT_MUTATION
-          })
-          console.log('stripePaymentIntentId: ', stripePaymentIntentId.value);
-      }
 
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          paymentIntentId: stripePaymentIntentId.value
+          // paymentIntentId: await this.getStripePaymentIntent()
         }
       });
 
