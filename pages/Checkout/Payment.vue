@@ -105,6 +105,8 @@ import { onSSR } from '@vue-storefront/core';
 import { ref, computed } from '@vue/composition-api';
 import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
 
+import gql from "graphql-tag";
+import { useMutation } from '@vue/apollo-composable'
 import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from './graphql';
 
 export default {
@@ -143,19 +145,24 @@ export default {
     const totalsref = computed(() => cartGetters.getTotals(cart.value));
     const totals = totalsref.value
 
+    const { mutate: getStripePaymentIntent } = useMutation(gql`
+      mutation CreateStripePaymentIntentMutation {
+        createStripePaymentIntent {
+          createStripePaymentIntent
+        }
+      }
+    `)
+
     const processOrder = async () => {
       console.log('paymentMethod-code: ', paymentMethod?.value?.code);
       if (paymentMethod?.value?.code === 'stripe') {
-          stripePaymentIntentId.value = this.$apollo.mutate({
-            mutation: CREATE_STRIPE_PAYMENT_INTENT_MUTATION
-          })
-          console.log('stripePaymentIntentId: ', stripePaymentIntentId.value);
+          // console.log('stripePaymentIntentId: ', getStripePaymentIntent());
       }
 
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          paymentIntentId: stripePaymentIntentId.value
+          // paymentIntentId: getStripePaymentIntent()
         }
       });
 

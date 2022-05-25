@@ -32,7 +32,9 @@ export default {
     ]
   },
   loading: { color: '#fff' },
-  plugins: [],
+  plugins: [
+    '~/plugins/apollo-client.js'
+  ],
   buildModules: [
     // to core
     '@nuxt/typescript-build',
@@ -71,12 +73,11 @@ export default {
     'vue-scrollto/nuxt',
     '@vue-storefront/middleware/nuxt',
     '@nuxtjs/apollo',
+    '@nuxtjs/composition-api/module'
   ],
   apollo: {
     clientConfigs: {
-      default: {
-        httpEndpoint: process.env.GRAPHQL_API,
-      }
+      default: '~/graphql'
     }
   },
   i18n: {
@@ -145,7 +146,8 @@ export default {
       ]
     },
     transpile: [
-      'vee-validate/dist/rules'
+      'vee-validate/dist/rules',
+      '@vue/apollo-composable'
     ],
     plugins: [
       new webpack.DefinePlugin({
