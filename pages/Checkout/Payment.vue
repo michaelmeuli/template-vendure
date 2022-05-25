@@ -106,6 +106,7 @@ import { ref, computed } from '@vue/composition-api';
 import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
 
 import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from './graphql';
+import gql from "graphql-tag";
 
 export default {
   name: 'ReviewOrder',
@@ -136,7 +137,9 @@ export default {
       })
     }
   },
-
+  mounted() {
+    this.getStripePaymentIntent();
+  },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
     const { set } = usePayment();
@@ -156,7 +159,6 @@ export default {
     const totalsref = computed(() => cartGetters.getTotals(cart.value));
     const totals = totalsref.value
 
-    this.getStripePaymentIntent();
     const processOrder = async () => {
 
       const response = await set({
