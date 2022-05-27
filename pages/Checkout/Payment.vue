@@ -161,7 +161,7 @@ export default {
 
     const stripePaymentIntentId = ref(null);
     const client = new ApolloClient({
-      uri: process.env.GRAPHQL_API,
+      uri: 'https://vendure.yoga-lichtquelle.ch/shop-api',
     });
 
     onSSR(async () => {
