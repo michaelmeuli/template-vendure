@@ -7,7 +7,9 @@
     />
     <SfTable class="sf-table--bordered table desktop-only">
       <SfTableHeading class="table__row">
-        <SfTableHeader class="table__header table__image">{{ $t('Item') }}</SfTableHeader>
+        <SfTableHeader class="table__header table__image">{{
+          $t("Item")
+        }}</SfTableHeader>
         <SfTableHeader
           v-for="tableHeader in tableHeaders"
           :key="tableHeader"
@@ -23,10 +25,15 @@
         class="table__row"
       >
         <SfTableData class="table__image">
-          <SfImage :src="cartGetters.getItemImage(product)" :alt="cartGetters.getItemName(product)" />
+          <SfImage
+            :src="cartGetters.getItemImage(product)"
+            :alt="cartGetters.getItemName(product)"
+          />
         </SfTableData>
         <SfTableData class="table__data table__description table__data">
-          <div class="product-title">{{ cartGetters.getItemName(product) }}</div>
+          <div class="product-title">
+            {{ cartGetters.getItemName(product) }}
+          </div>
           <div class="product-sku">{{ cartGetters.getItemSku(product) }}</div>
           <SfProperty
             v-for="(attribute, key) in cartGetters.getItemOptions(product)"
@@ -35,11 +42,16 @@
             :value="attribute.value"
           />
         </SfTableData>
-        <SfTableData class="table__data">{{ cartGetters.getItemQty(product) }}</SfTableData>
+        <SfTableData class="table__data">{{
+          cartGetters.getItemQty(product)
+        }}</SfTableData>
         <SfTableData class="table__data price">
           <SfPrice
             :regular="$n(cartGetters.getItemPrice(product).regular, 'currency')"
-            :special="cartGetters.getItemPrice(product).special && $n(cartGetters.getItemPrice(product).special, 'currency')"
+            :special="
+              cartGetters.getItemPrice(product).special &&
+              $n(cartGetters.getItemPrice(product).special, 'currency')
+            "
             class="product-price"
           />
         </SfTableData>
@@ -50,7 +62,12 @@
         <div class="summary__total">
           <SfProperty
             :name="$t('Subtotal')"
-            :value="$n(totals.special > 0 ? totals.special : totals.subtotal, 'currency')"
+            :value="
+              $n(
+                totals.special > 0 ? totals.special : totals.subtotal,
+                'currency'
+              )
+            "
             class="sf-property--full-width property"
           />
         </div>
@@ -60,10 +77,13 @@
         <SfProperty
           :name="$t('Total price')"
           :value="$n(totals.subtotal, 'currency')"
-          class="sf-property--full-width sf-property--large summary__property-total"
+          class="
+            sf-property--full-width sf-property--large
+            summary__property-total
+          "
         />
 
-        <VsfPaymentProvider @paymentMethodSelected="updatePaymentMethod"/>
+        <VsfPaymentProvider @paymentMethodSelected="updatePaymentMethod" />
 
         <div class="summary__action">
           <SfButton
@@ -71,7 +91,7 @@
             class="sf-button color-secondary summary__back-button"
             @click="$router.push('/checkout/billing')"
           >
-            {{ $t('Go back') }}
+            {{ $t("Go back") }}
           </SfButton>
           <SfButton
             v-e2e="'make-an-order'"
@@ -79,7 +99,7 @@
             class="summary__action-button"
             @click="processOrder"
           >
-            {{ $t('Make an order') }}
+            {{ $t("Make an order") }}
           </SfButton>
         </div>
       </div>
@@ -99,16 +119,23 @@ import {
   SfPrice,
   SfProperty,
   SfAccordion,
-  SfLink
-} from '@storefront-ui/vue';
-import { onSSR } from '@vue-storefront/core';
-import { ref, computed } from '@vue/composition-api';
-import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
+  SfLink,
+} from "@storefront-ui/vue";
+import { onSSR } from "@vue-storefront/core";
+import { ref, computed } from "@vue/composition-api";
+import {
+  useMakeOrder,
+  useCart,
+  cartGetters,
+  usePayment,
+} from "@vue-storefront/vendure";
 
-import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from './graphql';
+import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from "./graphql";
+import ApolloClient from "apollo-boost";
+import gql from 'graphql-tag';
 
 export default {
-  name: 'ReviewOrder',
+  name: "ReviewOrder",
   components: {
     SfHeading,
     SfTable,
@@ -121,7 +148,8 @@ export default {
     SfProperty,
     SfAccordion,
     SfLink,
-    VsfPaymentProvider: () => import('~/components/Checkout/VsfPaymentProvider')
+    VsfPaymentProvider: () =>
+      import("~/components/Checkout/VsfPaymentProvider"),
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
@@ -130,36 +158,55 @@ export default {
 
     const terms = ref(true);
     const paymentMethod = ref(null);
+
     const stripePaymentIntentId = ref(null);
+    const client = new ApolloClient({
+      uri: process.env.GRAPHQL_API,
+    });
 
     onSSR(async () => {
       await load();
     });
 
-    const updatePaymentMethod = method => {
+    const updatePaymentMethod = (method) => {
       paymentMethod.value = method;
     };
 
     const totalsref = computed(() => cartGetters.getTotals(cart.value));
-    const totals = totalsref.value
+    const totals = totalsref.value;
 
     const processOrder = async () => {
-      console.log('paymentMethod-code: ', paymentMethod?.value?.code);
-      if (paymentMethod?.value?.code === 'stripe') {
-          stripePaymentIntentId.value = this.$apollo.mutate({
-            mutation: CREATE_STRIPE_PAYMENT_INTENT_MUTATION
+      console.log("paymentMethod-code: ", paymentMethod?.value?.code);
+      if (paymentMethod?.value?.code === "stripe") {
+        client
+          .query({
+            query: gql`
+              query {
+                activeOrder {
+                  id
+                }
+              }
+            `,
           })
-          console.log('stripePaymentIntentId: ', stripePaymentIntentId.value);
+          .then((data) => console.log('activeOrder: ', data))
+          .catch((error) => console.error(error));
       }
 
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
-          paymentIntentId: stripePaymentIntentId.value
-        }
+          // paymentIntentId: stripePaymentIntentId.value
+        },
       });
 
-      const thankYouPath = { name: 'thank-you', query: { order: response?.code, payway: paymentMethod?.value?.code, total: totals.total }};
+      const thankYouPath = {
+        name: "thank-you",
+        query: {
+          order: response?.code,
+          payway: paymentMethod?.value?.code,
+          total: totals.total,
+        },
+      };
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
     };
@@ -169,13 +216,13 @@ export default {
       loading,
       products: computed(() => cartGetters.getItems(cart.value)),
       totals: computed(() => cartGetters.getTotals(cart.value)),
-      tableHeaders: ['Description', 'Quantity', 'Amount'],
+      tableHeaders: ["Description", "Quantity", "Amount"],
       cartGetters,
       processOrder,
       updatePaymentMethod,
-      paymentMethod
+      paymentMethod,
     };
-  }
+  },
 };
 </script>
 
@@ -257,9 +304,9 @@ export default {
       margin: 0 var(--spacer-xl) 0 0;
       width: auto;
     }
-    color:  var(--c-white);
+    color: var(--c-white);
     &:hover {
-      color:  var(--c-white);
+      color: var(--c-white);
     }
   }
   &__property-total {
