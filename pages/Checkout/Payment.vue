@@ -131,8 +131,9 @@ import {
 } from "@vue-storefront/vendure";
 
 import { CREATE_STRIPE_PAYMENT_INTENT_MUTATION } from "./graphql";
-import ApolloClient from "apollo-boost";
-import gql from 'graphql-tag';
+import { gql } from 'graphql-tag'
+import { useVSFContext } from '@vue-storefront/core';
+
 
 export default {
   name: "ReviewOrder",
@@ -160,9 +161,7 @@ export default {
     const paymentMethod = ref(null);
 
     const stripePaymentIntentId = ref(null);
-    const client = new ApolloClient({
-      uri: 'https://vendure.yoga-lichtquelle.ch/shop-api',
-    });
+    const { $vendure } = useVSFContext();               
 
     onSSR(async () => {
       await load();
@@ -178,13 +177,13 @@ export default {
     const processOrder = async () => {
       console.log("paymentMethod-code: ", paymentMethod?.value?.code);
       if (paymentMethod?.value?.code === "stripe") {
-        client
+        $vendure.client
           .query({
             query: gql`
               query {
-                activeOrder {
-                  id
-                }
+                activeChannel {
+	                createdAt
+	              }
               }
             `,
           })
