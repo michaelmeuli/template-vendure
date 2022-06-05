@@ -154,6 +154,62 @@ export default {
       setCart(null);
     };
 
+
+
+    //stripe initialisation
+    const stripeLoading = ref(false);
+    const { set: setStripe, secret } = useStripe();
+    const stripeInit = () => {
+        const paymentElement = elem.value.create("payment");
+        paymentElement.mount("#payment-element");
+        stripeInterfaceLoaded.value = true;
+        };
+
+    //this code uses the Stripe elements form, for more info and options refer to:https://stripe.com/docs/payments/elements
+    const elem = computed(() => {
+    if (secret.value.createStripePaymentIntent) {
+        return app.stripe.elements({
+            clientSecret: secret.value.createStripePaymentIntent,
+            });
+        }
+    });
+
+    onMounted(async () => {
+        await setStripe();
+        stripeInit(); //when using the nuxtjs stripe plugin (nuxt-stripe-plugin)
+        });
+
+    //
+
+    //Payment validation method example
+    const validation = async () => {
+        stripeLoading.value = true;
+        const { error } = await app.stripe.confirmPayment({
+            elements: elem.value,
+            confirmParams: {
+                return_url: `your return URL`,
+                },
+            });
+        showError(error);
+        stripeLoading.value = false;
+        };
+
+    //Error handling code example
+    const errorMessage = ref("");
+    const showError = (error) => {
+        if (error.type === "card_error" || error.type === "validation_error") {
+            errorMessage.value = error.message;
+            }
+        else {
+            errorMessage.value = "An unexpected error occured.";
+            }
+
+ };
+
+
+
+
+
     return {
       terms,
       loading,
