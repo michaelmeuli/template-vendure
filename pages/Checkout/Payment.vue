@@ -104,6 +104,7 @@ import {
 import { onSSR } from '@vue-storefront/core';
 import { ref, computed } from '@vue/composition-api';
 import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
+import { useStripe } from '~/composables';
 
 export default {
   name: 'ReviewOrder',
