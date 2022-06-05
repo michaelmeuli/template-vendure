@@ -102,7 +102,7 @@ import {
   SfLink
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
-import { ref, computed } from '@vue/composition-api';
+import { ref, computed, onMounted } from '@vue/composition-api';
 import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
 import { useStripe } from '~/composables';
 
