@@ -1,7 +1,4 @@
-import { ApiClientExtension } from '@vue-storefront/core';
-import gql from 'graphql-tag';
-
-export const stripeExtension: ApiClientExtension = {
+module.exports = {
   name: 'setStripePayment',
   extendApiMethods: {
     setStripePayment: async ({ context }) => {
@@ -13,4 +10,3 @@ export const stripeExtension: ApiClientExtension = {
     }
   }
 };
-
