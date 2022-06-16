@@ -1,4 +1,4 @@
-const setStripePayment = require('./extensions/setStripePayment');
+const stripeExtension = require('./extensions/setStripePayment');
 
 module.exports = {
   integrations: {
@@ -12,7 +12,7 @@ module.exports = {
       },
       extensions: (extensions) => [
         ...extensions,
-        setStripePayment
+        stripeExtension
       ],
     }
   }
