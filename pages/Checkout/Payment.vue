@@ -166,6 +166,7 @@ export default {
     //this code uses the Stripe elements form, for more info and options refer to:https://stripe.com/docs/payments/elements
     const elem = computed(() => {
     if (secret.value.createStripePaymentIntent) {
+      console.log('secret.value.createStripePaymentIntent: ', secret.value.createStripePaymentIntent);
         return app.stripe.elements({
             clientSecret: secret.value.createStripePaymentIntent,
             });
