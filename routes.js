@@ -65,6 +65,11 @@ export function getRoutes(themeDir = __dirname) {
         path: 'thank-you',
         name: 'thank-you',
         component: path.resolve(themeDir, 'pages/Checkout/ThankYou.vue')
+      },
+      {
+        path: 'stripe',
+        name: 'stripe',
+        component: path.resolve(themeDir, 'pages/Checkout/Stripe.vue')
       }
     ]
   }

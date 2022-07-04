@@ -21,18 +21,24 @@ export default {
         'http-equiv': 'Content-Security-Policy',
         content: 'upgrade-insecure-requests'
       },
-      { 
-        hid: 'keywords', 
-        name: 'keywords', 
-        content: 'doterra, ätherische öle, aetherische oele, therapeutisch, wellness, spa, massagen, diffuser, Aromatherapie, Atemwege, zur Beruhigung, zur Hautpflege' 
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: 'doterra, ätherische öle, aetherische oele, therapeutisch, wellness, spa, massagen, diffuser, Aromatherapie, Atemwege, zur Beruhigung, zur Hautpflege'
       }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ]
+    ],
+    script: [
+      { src: 'https://js.stripe.com/v3' },
+    ],
+  },
+  env: {
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY
   },
   loading: { color: '#fff' },
-  plugins: [],
+  plugins: [{ src: '~/plugins/vue-stripe.js', ssr: false }],
   buildModules: [
     // to core
     '@nuxt/typescript-build',
@@ -69,7 +75,7 @@ export default {
     }],
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
-    '@vue-storefront/middleware/nuxt'
+    '@vue-storefront/middleware/nuxt'       
   ],
   i18n: {
     currency: 'USD',

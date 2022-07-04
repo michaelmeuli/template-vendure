@@ -7,7 +7,9 @@
     />
     <SfTable class="sf-table--bordered table desktop-only">
       <SfTableHeading class="table__row">
-        <SfTableHeader class="table__header table__image">{{ $t('Item') }}</SfTableHeader>
+        <SfTableHeader class="table__header table__image">{{
+          $t('Item')
+        }}</SfTableHeader>
         <SfTableHeader
           v-for="tableHeader in tableHeaders"
           :key="tableHeader"
@@ -23,10 +25,15 @@
         class="table__row"
       >
         <SfTableData class="table__image">
-          <SfImage :src="cartGetters.getItemImage(product)" :alt="cartGetters.getItemName(product)" />
+          <SfImage
+            :src="cartGetters.getItemImage(product)"
+            :alt="cartGetters.getItemName(product)"
+          />
         </SfTableData>
         <SfTableData class="table__data table__description table__data">
-          <div class="product-title">{{ cartGetters.getItemName(product) }}</div>
+          <div class="product-title">
+            {{ cartGetters.getItemName(product) }}
+          </div>
           <div class="product-sku">{{ cartGetters.getItemSku(product) }}</div>
           <SfProperty
             v-for="(attribute, key) in cartGetters.getItemOptions(product)"
@@ -35,22 +42,33 @@
             :value="attribute.value"
           />
         </SfTableData>
-        <SfTableData class="table__data">{{ cartGetters.getItemQty(product) }}</SfTableData>
+        <SfTableData class="table__data">{{
+          cartGetters.getItemQty(product)
+        }}</SfTableData>
         <SfTableData class="table__data price">
           <SfPrice
             :regular="$n(cartGetters.getItemPrice(product).regular, 'currency')"
-            :special="cartGetters.getItemPrice(product).special && $n(cartGetters.getItemPrice(product).special, 'currency')"
+            :special="
+              cartGetters.getItemPrice(product).special &&
+              $n(cartGetters.getItemPrice(product).special, 'currency')
+            "
             class="product-price"
           />
         </SfTableData>
       </SfTableRow>
     </SfTable>
+
     <div class="summary">
       <div class="summary__group">
         <div class="summary__total">
           <SfProperty
             :name="$t('Subtotal')"
-            :value="$n(totals.special > 0 ? totals.special : totals.subtotal, 'currency')"
+            :value="
+              $n(
+                totals.special > 0 ? totals.special : totals.subtotal,
+                'currency'
+              )
+            "
             class="sf-property--full-width property"
           />
         </div>
@@ -63,13 +81,13 @@
           class="sf-property--full-width sf-property--large summary__property-total"
         />
 
-        <VsfPaymentProvider @paymentMethodSelected="updatePaymentMethod"/>
+        <VsfPaymentProvider @paymentMethodSelected="updatePaymentMethod" />
 
         <div class="summary__action">
           <SfButton
             type="button"
             class="sf-button color-secondary summary__back-button"
-            @click="$router.push('/checkout/billing')"
+            @click="$router.push('/checkout/shipping')"
           >
             {{ $t('Go back') }}
           </SfButton>
@@ -80,6 +98,14 @@
             @click="processOrder"
           >
             {{ $t('Make an order') }}
+          </SfButton>
+          <SfButton
+            v-e2e="'make-an-order'"
+            :disabled="!paymentMethod || !terms"
+            class="summary__action-button"
+            @click="processStripeOrder"
+          >
+            Mit Stripe bestellen
           </SfButton>
         </div>
       </div>
@@ -99,11 +125,17 @@ import {
   SfPrice,
   SfProperty,
   SfAccordion,
-  SfLink
+  SfLink,
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
-import { ref, computed } from '@vue/composition-api';
-import { useMakeOrder, useCart, cartGetters, usePayment } from '@vue-storefront/vendure';
+import { ref, computed, onMounted } from '@vue/composition-api';
+import {
+  useMakeOrder,
+  useCart,
+  cartGetters,
+  usePayment,
+} from '@vue-storefront/vendure';
+import { useStripe } from '@/composables/useStripe';
 
 export default {
   name: 'ReviewOrder',
@@ -119,7 +151,8 @@ export default {
     SfProperty,
     SfAccordion,
     SfLink,
-    VsfPaymentProvider: () => import('~/components/Checkout/VsfPaymentProvider')
+    VsfPaymentProvider: () =>
+      import('~/components/Checkout/VsfPaymentProvider'),
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
@@ -133,23 +166,50 @@ export default {
       await load();
     });
 
-    const updatePaymentMethod = method => {
+    const updatePaymentMethod = (method) => {
       paymentMethod.value = method;
     };
 
     const totalsref = computed(() => cartGetters.getTotals(cart.value));
-    const totals = totalsref.value
+    const totals = totalsref.value;
 
     const processOrder = async () => {
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
           // Here you would pass data from an external Payment Provided after successful payment process like payment id.
-        }
+        },
       });
 
-      const thankYouPath = { name: 'thank-you', query: { order: response?.code, payway: paymentMethod?.value?.code, total: totals.total }};
+      const thankYouPath = {
+        name: 'thank-you',
+        query: {
+          order: response?.code,
+          payway: paymentMethod?.value?.code,
+          total: totals.total,
+        },
+      };
       context.root.$router.push(context.root.localePath(thankYouPath));
+      setCart(null);
+    };
+
+    const { set: setStripe, secret } = useStripe();
+
+    const processStripeOrder = async () => {
+      await setStripe();
+      console.log(
+        'secret.value.createStripePaymentIntent: ',
+        secret.value.createStripePaymentIntent
+      );
+      const stripePath = {
+        name: 'stripe',
+        query: {
+          publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+          stripePaymentIntent: secret.value.createStripePaymentIntent,
+          total: totals.total,
+        },
+      };
+      context.root.$router.push(context.root.localePath(stripePath));
       setCart(null);
     };
 
@@ -162,9 +222,10 @@ export default {
       cartGetters,
       processOrder,
       updatePaymentMethod,
-      paymentMethod
+      paymentMethod,
+      processStripeOrder,
     };
-  }
+  },
 };
 </script>
 
@@ -246,9 +307,9 @@ export default {
       margin: 0 var(--spacer-xl) 0 0;
       width: auto;
     }
-    color:  var(--c-white);
+    color: var(--c-white);
     &:hover {
-      color:  var(--c-white);
+      color: var(--c-white);
     }
   }
   &__property-total {
