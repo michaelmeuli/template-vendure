@@ -23,6 +23,7 @@ module.exports = {
                 `,
                 fetchPolicy: 'no-cache',
               });
+              console.log('request.data: ', request.data);
               return request.data;
             }
           }
