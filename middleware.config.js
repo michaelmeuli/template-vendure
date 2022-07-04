@@ -1,3 +1,5 @@
+const setStripePayment = require('./extensions/setStripePayment');
+
 module.exports = {
   integrations: {
     vendure: {
@@ -7,7 +9,11 @@ module.exports = {
           uri: process.env.GRAPHQL_API,
           tokenMethod: process.env.TOKEN_METHOD
         },
-      }
+      },
+      extensions: (extensions) => [
+        ...extensions,
+        setStripePayment
+      ],
     }
   }
 };
