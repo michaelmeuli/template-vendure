@@ -1,5 +1,3 @@
-const setStripePayment = require('./extensions/setStripePayment');
-
 module.exports = {
   integrations: {
     vendure: {
@@ -12,7 +10,23 @@ module.exports = {
       },
       extensions: (extensions) => [
         ...extensions,
-        setStripePayment
+        {
+          name: 'stripe-extension',
+          extendApiMethods: {
+            setStripePayment: async (context) => {  
+              console.log('setStripePayment called');
+              const request = await context.client.mutate({
+                mutation: gql`
+                  mutation {
+                    createStripePaymentIntent
+                  }
+                `,
+                fetchPolicy: 'no-cache',
+              });
+              return request.data;
+            }
+          }
+        }
       ],
     }
   }
