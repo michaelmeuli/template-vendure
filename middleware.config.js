@@ -1,7 +1,7 @@
 module.exports = {
   integrations: {
     vendure: {
-      location: '@vue-storefront/vendure-api/server',
+      location: '@mmeuli/vendure-api/server',
       configuration: {
         api: {
           uri: process.env.GRAPHQL_API,
