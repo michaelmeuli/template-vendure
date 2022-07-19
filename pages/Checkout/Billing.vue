@@ -252,7 +252,6 @@ export default {
           await loadShipping();
         }
         oldBilling = {...billingDetails.value};
-        console.log('shippingDetails.value: ', shippingDetails.value);
         billingDetails.value = {...mapOrderAddressToAddressForm(shippingDetails.value)};
         return;
       }

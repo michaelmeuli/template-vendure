@@ -1,3 +1,5 @@
+const gql = require('graphql-tag');
+
 module.exports = {
   integrations: {
     vendure: {
@@ -13,22 +15,17 @@ module.exports = {
         {
           name: 'stripe-extension',
           extendApiMethods: {
-            setStripePayment: async (context) => {  
-              console.log('setStripePayment called');
-              const request = await context.client.mutate({
-                mutation: gql`
-                  mutation {
-                    createStripePaymentIntent
-                  }
-                `,
-                fetchPolicy: 'no-cache',
-              });
-              console.log('request.data: ', request.data);
+            setStripePayment: async ({ client, config }) => {  
+              const request = await client.mutate({mutation: gql`
+                mutation {
+                  createStripePaymentIntent
+                }
+                `, fetchPolicy: 'no-cache' });
               return request.data;
             }
           }
         }
-      ],
+      ]
     }
   }
 };

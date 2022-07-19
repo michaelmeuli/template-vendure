@@ -17,6 +17,11 @@ export function getRoutes(themeDir = __dirname) {
     component: path.resolve(themeDir, 'pages/TechStack.vue')
   },
   {
+    name: 'stripe-success',
+    path: '/stripe-success',
+    component: path.resolve(themeDir, 'pages/StripeSuccess.vue')
+  },
+  {
     name: 'product',
     path: '/p/:id/:slug/',
     component: path.resolve(themeDir, 'pages/Product.vue')
