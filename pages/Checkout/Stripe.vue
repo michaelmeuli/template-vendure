@@ -6,7 +6,7 @@
       :elements-options="elementsOptions"
       :confirm-params="confirmParams"
     />
-    <SfButton 
+    <SfButton
       class="stripe-button button-size"
       @click="pay"
     >
@@ -32,7 +32,7 @@ export default {
       clientSecret: context.root.$route.query.stripePaymentIntent,
     };
     const confirmParams = {
-      return_url: 'http://localhost:3001/checkout/thank-you',
+      return_url: 'http://localhost:3001/stripe-success',
     };
 
     return {

@@ -99,14 +99,6 @@
           >
             {{ $t('Make an order') }}
           </SfButton>
-          <SfButton
-            v-e2e="'make-an-order'"
-            :disabled="!paymentMethod || !terms"
-            class="summary__action-button"
-            @click="processStripeOrder"
-          >
-            Mit Stripe bestellen
-          </SfButton>
         </div>
       </div>
     </div>
@@ -174,6 +166,16 @@ export default {
     const totals = totalsref.value;
 
     const processOrder = async () => {
+      if (paymentMethod.value.code === 'swissqrinvoice') {
+        processOrderSwissQrBill();
+      }
+      else if (paymentMethod.value.code === 'stripe') {
+        processStripeOrder();
+      }
+    };
+
+
+    const processOrderSwissQrBill = async () => {
       const response = await set({
         method: paymentMethod?.value?.code,
         metadata: {
@@ -197,10 +199,6 @@ export default {
 
     const processStripeOrder = async () => {
       await setStripe();
-      console.log(
-        'secret.value.createStripePaymentIntent: ',
-        secret.value.createStripePaymentIntent
-      );
       const stripePath = {
         name: 'stripe',
         query: {
@@ -223,7 +221,6 @@ export default {
       processOrder,
       updatePaymentMethod,
       paymentMethod,
-      processStripeOrder,
     };
   },
 };

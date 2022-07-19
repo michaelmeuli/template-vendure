@@ -1,5 +1,5 @@
 <template>
-  <div id="thank-you">
+  <div v-if="isSuccess" id="thank-you">
     <SfCallToAction
       v-e2e="'thank-you-banner'"
       class="banner"
@@ -11,36 +11,13 @@
     >
       <template #description>
         <div class="banner__order-number">
-          <span>{{ $t('Order No.') }}</span>
-          <strong>{{ order.number }}</strong>
+          <span></span>
+          <strong>Zahlung erfolgreich</strong>
         </div>
       </template>
     </SfCallToAction>
 
-    <div v-if="isSwissqrinvoice" class="invoice">
-      <pdf :src="url"></pdf>
-      <a :href="url" target="_blank">
-        <SfButton class="download_qr-bill-button button-size">
-          Download QR-Rechnung
-        </SfButton>
-      </a>
-      <p>
-        Die QR-Rechnung wurde dir auch per E-Mail geschickt und kann bequem mit ihrer Banken-App eingelesen werden.
-      </p>
-      <p>
-        Eventuell landete die QR-Rechnung per E-Mail im Spam Ordner.
-      </p>
-      <p>
-        Die Ware wird sofort nach Bestelleingang reserviert.
-      </p>
-      <p>
-        Der Versand erfolgt nach Zahlungseingang.
-      </p>
-      <p>
-        Bei Fragen wenden Sie sich bitte an: yoga.lichtquelle@gmail.com
-      </p>
 
-    </div>
 
     <SfButton link="/" class="sf-button back-button color-secondary button-size">{{ $t('Back to homepage') }}</SfButton>
   </div>
@@ -48,75 +25,30 @@
 
 <script>
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
-import { PDF, BlobStream } from 'swissqrbill';
-import { useShipping, userShippingGetters } from '@vue-storefront/vendure';
-import { ref, reactive, onMounted, computed } from '@vue/composition-api';
-import pdf from 'vue-pdf';
 
 export default {
   components: {
     SfHeading,
     SfButton,
-    SfCallToAction,
-    pdf
+    SfCallToAction
   },
-  name: 'ThankYou',
+  name: 'StripeSuccess',
   setup(props, context) {
-    const { shipping: shippingDetails, load: loadShipping } = useShipping();
-    const url = ref('');
+    const payment_intent = context.root.$route.query.payment_intent;
+    const payment_intent_client_secret = context.root.$route.query.payment_intent_client_secret;
+    const redirect_status = context.root.$route.query.redirect_status;
 
-    const getShippingDetails = async () => {
-      if (!shippingDetails.value) {
-        await loadShipping();
-      }
-    };
-    getShippingDetails();
-
-    const data = {
-      currency: 'CHF',
-      amount: parseFloat(context.root.$route.query.total),
-      additionalInformation: context.root.$route.query.order,
-      creditor: {
-        name: 'Jessica Meuli',
-        address: 'Sonnenhaldenstrasse 5',
-        zip: 8360,
-        city: 'Wallenwil',
-        account: 'CH14 0078 1612 4519 5200 2',
-        country: 'CH',
-      },
-      debtor: {
-        name: shippingDetails.value.fullName || '',
-        address: shippingDetails.value.streetLine1 || '',
-        zip: shippingDetails.value.postalCode || '',
-        city: shippingDetails.value.city || '',
-        country: 'CH',
-      },
-    }
-
-    const stream = new BlobStream();
-    const pdf = new PDF(data, stream);
-    pdf.on('finish', () => {
-      url.value = stream.toBlobURL('application/pdf');
-    });
-
-    const isSwissqrinvoice = context.root.$route.query.payway === 'swissqrinvoice';
+    const isSuccess = redirect_status === 'succeeded';
 
     return {
-      address: {
-        name: 'Jessica Meuli',
-        street: 'Sonnenhaldenstrasse 5',
-        city: '8360 Wallenwil',
-        email: 'yoga.lichtquelle@gmail.com'
-      },
-      order: {
-        number: `#${context.root.$route.query.order}`
-      },
-      isSwissqrinvoice,
-      data,
-      url
+      payment_intent,
+      payment_intent_client_secret,
+      redirect_status,
+      isSuccess
     };
   }
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -286,3 +218,4 @@ export default {
   text-align: center;
 }
 </style>
+
