@@ -39,6 +39,13 @@ export default {
     const redirect_status = context.root.$route.query.redirect_status;
 
     const isSuccess = redirect_status === 'succeeded';
+    const { cart, load } = useCart();
+
+    onMounted(async () => {
+      await load();
+      const ordercode = cart?.value.code;
+      console.log('ordercode: ', ordercode);
+    });
 
     return {
       payment_intent,
