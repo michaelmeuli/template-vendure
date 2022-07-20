@@ -11,7 +11,8 @@
     >
       <template #description>
         <div class="banner__order-number">
-          <span></span>
+          <span>{{ $t('Order No.') }}</span>
+          <strong>{{ ordercode }}</strong>
           <strong>Zahlung erfolgreich</strong>
         </div>
       </template>
@@ -25,6 +26,8 @@
 
 <script>
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
+import { useCart } from '@vue-storefront/vendure';
+import { ref, onMounted } from '@vue/composition-api';
 
 export default {
   components: {
@@ -40,18 +43,20 @@ export default {
 
     const isSuccess = redirect_status === 'succeeded';
     const { cart, load } = useCart();
+    const ordercode = ref('');
 
     onMounted(async () => {
       await load();
-      const ordercode = cart?.value.code;
-      console.log('ordercode: ', ordercode);
+      ordercode.value = cart?.value.code;
+      console.log('ordercode: ', ordercode.value);
     });
 
     return {
       payment_intent,
       payment_intent_client_secret,
       redirect_status,
-      isSuccess
+      isSuccess,
+      ordercode
     };
   }
 };
