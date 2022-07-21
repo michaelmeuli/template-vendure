@@ -12,7 +12,7 @@
       <template #description>
         <div class="banner__order-number">
           <span>{{ $t('Order No.') }}</span>
-          <strong>{{ order.number }}</strong>
+          <strong>&nbsp;{{ order.number}}</strong>
         </div>
       </template>
     </SfCallToAction>

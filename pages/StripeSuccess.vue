@@ -12,13 +12,26 @@
       <template #description>
         <div class="banner__order-number">
           <span>{{ $t('Order No.') }}</span>
-          <strong>{{ ordercode }}</strong>
-          <strong>Zahlung erfolgreich</strong>
+          <strong>&nbsp;{{ ordercode }}</strong>
         </div>
       </template>
     </SfCallToAction>
 
+    <div class="invoice">
+      <p>
+        Zahlung erfolgreich.
+      </p>
+      <p>
+        Die Bestellbestätigung wurde Ihnen auch per E-Mail geschickt.
+      </p>
+      <p>
+        Eventuell landete die Bestellbestätigung im Spam Ordner.
+      </p>
+      <p>
+        Bei Fragen wenden Sie sich bitte an: yoga.lichtquelle@gmail.com
+      </p>
 
+    </div>
 
     <SfButton link="/" class="sf-button back-button color-secondary button-size">{{ $t('Back to homepage') }}</SfButton>
   </div>
@@ -47,7 +60,7 @@ export default {
 
     onMounted(async () => {
       await load();
-      ordercode.value = cart?.value.code;
+      ordercode.value = `#${cart?.value.code}`;
       console.log('ordercode: ', ordercode.value);
     });
 
