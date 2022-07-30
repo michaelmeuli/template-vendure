@@ -41,6 +41,15 @@
         class="sf-property--full-width sf-property--large property-total"
       />
     </div>
+    <div class="highlighted promo-code">
+      <SfInput
+        v-model="promoCode"
+        name="promoCode"
+        :label="$t('Enter promo code')"
+        class="sf-input--filled promo-code__input"
+      />
+      <SfButton class="promo-code__button" @click="() => applyCoupon({ couponCode: promoCode, currentCart: cart })">{{ $t('Apply') }}</SfButton>
+    </div>
   </div>
 </template>
 <script>
